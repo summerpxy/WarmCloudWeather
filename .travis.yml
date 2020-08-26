@@ -10,6 +10,6 @@ android:
     - extra-android-m2repository
 
 before_script:
-  echo "hello begin"
+  - chmod +x gradlew
 
 script: ./gradlew clean build

@@ -1,6 +1,9 @@
 language: android
+
 jdk: oraclejdk8
+
 dist: trusty
+
 sudo: false
 
 android:
@@ -27,4 +30,5 @@ before_script:
   echo "hello begin"
 
 
-script: gradle build 
+install: ./gradlew clean assemble --stacktrace
+

@@ -56,5 +56,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
+    implementation 'com.permissionx.guolindev:permissionx:1.4.0'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
 }

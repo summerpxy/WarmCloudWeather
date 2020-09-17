@@ -32,7 +32,8 @@ public class LocationPresenter implements ILocationContract.ILocationPresenter {
         public void onReceiveLocation(BDLocation bdLocation) {
             String name = bdLocation.getCity();
             if (!TextUtils.isEmpty(name)) {
-                mLocationView.setLocationInfo(name);
+                mLocationView.setLocationInfo(bdLocation.getCityCode() + ":" + bdLocation.getDistrict() + ":" + bdLocation.getStreet()
+                + bdLocation.getAdCode());
             }
         }
     }

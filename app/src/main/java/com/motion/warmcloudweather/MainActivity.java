@@ -32,13 +32,24 @@ public class MainActivity extends AppCompatActivity implements ILocationContract
 
 
     private ILocationContract.ILocationPresenter mLocationPresenter;
+    @BindView(R.id.toolbar)
+    Toolbar mToolBar;
+
+    @BindView(R.id.rv_content)
+    RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+
         mLocationPresenter = new LocationPresenter(this.getApplicationContext());
         mLocationPresenter.setView(this);
+
+        setToolBar();
+        setRecyclerViewContent();
 
         PermissionX.init(this)
                 .permissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -46,16 +57,73 @@ public class MainActivity extends AppCompatActivity implements ILocationContract
                     if (allGranted) {
                         mLocationPresenter.startLocation();
                     } else {
-
+                        Toast.makeText(this, "need permission grant", Toast.LENGTH_SHORT).show();
                     }
                 });
 
 
     }
 
+    private void setToolBar() {
+        this.setSupportActionBar(mToolBar);
+        this.getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        ActionBarDrawerToggle
+    }
+
+    private void setRecyclerViewContent() {
+        List<String> myData = new ArrayList<>();
+        int index = 0;
+        while (index++ < 100) {
+            myData.add(String.valueOf(index));
+        }
+        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(manager);
+        mRecyclerView.setAdapter(new BaseRecyclerViewAdapter(this, myData));
+    }
+
     @Override
     public void setLocationInfo(String cityName) {
         Timber.e(cityName);
         Toast.makeText(this, cityName, Toast.LENGTH_SHORT).show();
+    }
+
+
+}
+
+class BaseRecyclerViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
+
+    private List<String> data;
+    private LayoutInflater layoutInflater;
+
+    public BaseRecyclerViewAdapter(Context context, List<String> content) {
+        this.data = content;
+        layoutInflater = LayoutInflater.from(context);
+    }
+
+    @NonNull
+    @Override
+    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = layoutInflater.inflate(R.layout.content_item, null);
+        return new BaseViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
+        holder.textView.setText(data.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return data.size();
+    }
+}
+
+class BaseViewHolder extends RecyclerView.ViewHolder {
+
+    public TextView textView;
+
+    public BaseViewHolder(@NonNull View itemView) {
+        super(itemView);
+        textView = itemView.findViewById(R.id.tv_content);
     }
 }
